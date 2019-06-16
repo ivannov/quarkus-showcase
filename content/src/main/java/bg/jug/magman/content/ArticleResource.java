@@ -1,5 +1,8 @@
 package bg.jug.magman.content;
 
+import org.eclipse.microprofile.metrics.MetricUnits;
+import org.eclipse.microprofile.metrics.annotation.Metered;
+
 import javax.transaction.Transactional;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -14,6 +17,7 @@ import java.util.List;
 public class ArticleResource {
 
     @GET
+    @Metered(name = "All articles listed", unit = MetricUnits.MINUTES)
     public List<Article> listAll() {
         return Article.listAll();
     }

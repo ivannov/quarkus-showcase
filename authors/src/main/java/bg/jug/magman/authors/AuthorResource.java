@@ -1,5 +1,7 @@
 package bg.jug.magman.authors;
 
+import org.eclipse.microprofile.reactive.messaging.Outgoing;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -13,6 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class AuthorResource {
 
     private Map<String, Author> authors = new ConcurrentHashMap<>();
+    private Author lastAuthor;
 
     @GET
     public Collection<Author> listAll() {
@@ -22,7 +25,15 @@ public class AuthorResource {
     @POST
     public Author addAuthor(Author author) {
         authors.put(author.email, author);
+        this.lastAuthor = author;
+        authorCreated();
         return authors.get(author.email);
+    }
+
+    @Outgoing("authors")
+    public Author authorCreated() {
+        System.out.println("Called with new author: " + lastAuthor);
+        return lastAuthor;
     }
 
     @GET
