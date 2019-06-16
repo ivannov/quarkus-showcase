@@ -2,6 +2,8 @@ package bg.jug.magman.content;
 
 import org.eclipse.microprofile.reactive.messaging.Incoming;
 
+import javax.json.bind.Jsonb;
+import javax.json.bind.JsonbBuilder;
 import javax.transaction.Transactional;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -21,8 +23,8 @@ public class AuthorResource {
 
     @Incoming("authors")
     @Transactional
-    public void authorAdded(Author author) {
+    public void authorAdded(String author) {
         System.out.println("Received author from Kafka: " + author);
-        author.persist();
+        JsonbBuilder.create().fromJson(author, Author.class).persist();
     }
 }
