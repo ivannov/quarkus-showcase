@@ -14,6 +14,8 @@ import javax.ws.rs.core.MediaType;
 @Produces(MediaType.APPLICATION_JSON)
 public class AuthorResource {
 
+    private static final Jsonb JSONB = JsonbBuilder.create();
+
     @POST
     @Transactional
     public Author addAuthor(Author author) {
@@ -25,6 +27,6 @@ public class AuthorResource {
     @Transactional
     public void authorAdded(String author) {
         System.out.println("Received author from Kafka: " + author);
-        JsonbBuilder.create().fromJson(author, Author.class).persist();
+        JSONB.fromJson(author, Author.class).persist();
     }
 }

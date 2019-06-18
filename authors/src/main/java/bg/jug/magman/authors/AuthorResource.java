@@ -28,7 +28,9 @@ public class AuthorResource {
 
     private Map<String, Author> authors = new ConcurrentHashMap<>();
 
-    @Inject @Stream("authors") Emitter<KafkaMessage<String, String>> authorsEmitter;
+    @Inject
+    @Stream("authors")
+    private Emitter<KafkaMessage<String, String>> authorsEmitter;
 
     @GET
     public Collection<Author> listAll() {

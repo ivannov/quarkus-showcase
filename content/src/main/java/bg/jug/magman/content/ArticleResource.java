@@ -25,7 +25,7 @@ public class ArticleResource {
     @POST
     @Transactional
     public Article newArticle(Article article) {
-        article.author = Author.findById(article.author.id);
+        article.author = Author.findByEmail(article.author.email).orElseThrow(() -> new WebApplicationException(Response.Status.NOT_FOUND));
         article.publishDate = LocalDate.now();
         article.persist();
         return article;
